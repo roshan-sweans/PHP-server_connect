@@ -19,11 +19,13 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $err_name = $err_phone = $err_email = $err_address = $err_gender = $err_education = $err_dob = $err_working = $err_annum = $trucking=$vid_games=$hanging_out="";
+    $err_name = $err_phone = $err_email = $err_address = $err_gender = $err_education = $err_dob = $err_working = $err_annum ="";
     $name = $email = $phone = $gender = $address = $education = $dob = $interests =  $annum = $trucking = $vid_games = $hanging_out = $anime = "";
+    $s=0;
     if (isset($_POST["submit"])) {
         if (isset($_POST['trucking'])) {
             $trucking = $_POST['trucking'];
+            
         }
         if (isset($_POST['vid_games'])) {
             $vid_games = $_POST["vid_games"];
@@ -51,62 +53,97 @@
         // name validation
         if (strlen($_POST["name"]) < 3) {
             $err_name = "Your name should be atleast 3 characters long";
+            $s=1;
         } else {
             if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
                 $err_name = "Only Alphabets  and white spaces are allowed in the Name";
+                $s=1;
             }
         }
         // email validation
         if (empty($email)) {
             $err_email = "Email can't be empty";
+            $s=1;
         } else {
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $err_email = "Please enter a valid email";
+                $s=1;
             }
         }
         // phone no validation
         if (empty($phone)) {
             $err_phone = "Phone number can't be empty";
+            $s=1;
         } else {
             if (!((preg_match('/^[0-9]{10}+$/', $phone)) && preg_match('/@.+\./', $email))) {
                 $err_phone = "Phone number should only contain digits and can't be longer than 10 digits";
+                $s=1;
             }
         }
         // address 
         if (empty($address)) {
             $err_address = "Your need to enter your address";
+            $s=1;
         } else {
             if (strlen($address) < 6) {
                 $err_address = "Address should be atleast 6 characters";
+                $s=1;
             }
         }
         // date of birth
         if (empty($dob)) {
             $err_dob = "Your need to enter your Date of birth";
+            $s=1;
         }
         // education 
         if (empty($education)) {
             $err_education = "You need to select your education";
+            $s=1;
         }
         // annum 
         if (empty($annum)) {
             $err_annum = "Your need to enter your annual income";
+            $s=1;
         } else {
             if ($annum < 100000) {
                 $err_annum = "You need atlest ₹100000 Annual income to register";
+                $s=1;
             }
         }
         // gender 
         if (empty($_POST["gender"])) {
             $err_gender = "Please select an option";
+            $s=1;
         }
         // intersts 
         //    working 
         if (empty($working)) {
             $err_working = "You need to specify weather your are working or not";
+            $s=1;
         }
     }
-    $ser
+    // $err_name==""&&$err_address==""&&$err_phone==""&&$err_email==""&&$err_gender=""&&$err_education==""&&$err_dob==""&&$err_working==""&&$err_annum=""
+    // echo $err_name.$err_address.$err_phone.$err_email.$err_gender.$err_education.$err_dob.$err_working.$err_annum;
+    if($s==0){
+        if ($working=="yes"){
+            $work=1;
+        }
+        else {
+            $work=0;
+        }
+        $phone=(int)$phone;
+        $interests=$trucking." ".$vid_games." ".$hanging_out." ".$anime;
+        $sql = "INSERT INTO applicant_details(Name,Email,Address,Phone,Date_of_birth,Gender,Education,Interests,Working_status,Annual_income)
+         VALUES ('$name','$email','$address','$phone','$dob','$gender','$education','$interests',$work,$annum)";
+    $conn->query($sql);
+    if ($conn->query($sql) === TRUE) {
+        $lastid= $conn->insert_id;
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+    // header('Location : output.php');
+    }
+    echo "<br>".$dob;
     ?>
     <div class="head">
         <div class="container">
@@ -124,6 +161,7 @@
                 <div class="err"><?php echo $err_phone ?></div>
                 <label for="dob" class="hed">Date of Birth </label><br>
                 <input type="date" name="dob" value="<?php echo htmlentities($dob); ?>" placeholder="Date of Birth"><br>
+                
                 <div class="err"><?php echo $err_dob ?></div>
                 <label for="gender" class="hed">Gender </label><br>
                 <label for="male">Male :</label>
@@ -151,7 +189,7 @@
                 <div class="err"><?php echo $err_education ?></div>
                 <label for="interests" class="hed">Insterests</label><br>
                 <label for="truking"> Trucking :</label>
-                <input type="checkbox" name="trucking" value="Trucking" <?php echo ($trucking == "trucking" ? 'checked' : ''); ?>><br>
+                <input type="checkbox" name="trucking" value="Trucking" <?php echo ($trucking == "Trucking" ? 'checked' : ''); ?>><br>
                 <label for="vid games"> Video Games :</label>
                 <input type="checkbox" name="vid_games" value="Video Games" <?php echo ($vid_games == "Video Games" ? 'checked' : ''); ?>><br>
                 <label for="hang out">Hanging Out :</label>
@@ -174,26 +212,6 @@
             </form>
         </div>
     </div>
-    <?php
-        if($err_name==''&&$err_address==''&&$err_phone==''&&$err_email==''&&$err_gender=''&&$err_education==''&&$err_dob==''&&$err_working==''&&$err_annum=''){
-            echo "it is here";
-            if ($working=="yes"){
-                $work=1;
-            }
-            else {
-                $work=0;
-            }
-            $interests=$trucking." ".$vid_games." ".$hanging_out." ".$anime;
-            $sql = "INSERT INTO applicant_details VALUES ('$name','$email','$address','$phone','$dob','$gender','$education','$interests','$work','$annum')";
-        $conn->query($sql);
-        if ($conn->query($sql) === TRUE) {
-            $lastid= $conn->insert_id;
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-        header('Location : output.php');
-        }
-    ?>
 </body>
 
 </html>
