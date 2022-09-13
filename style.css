@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
 }
+
 /* body {
     background-color: aliceblue
 } */
@@ -51,6 +52,7 @@ input[type=number] {
     font-weight: 500;
     padding-top: 8%;
 }
+
 p {
     padding-block-start: 0.5em;
     font-size: 1.1rem;
@@ -61,51 +63,59 @@ p {
 p::after {
     content: '';
     height: 2px;
-    width:107%;
+    width: 107%;
     background-color: black;
     position: absolute;
     transform: translate(-13.7rem);
-    bottom:-0.125em;
+    bottom: -0.125em;
 }
-input[type="checkbox"],input[type="radio"]{
-    transform: translate(-11em,-1.3em);
+
+input[type="checkbox"],
+input[type="radio"] {
+    transform: translate(-11em, -1.3em);
 }
 
 .hed {
     font-size: 1.5rem;
     font-weight: 500;
 }
+
 label {
     font-size: 1.2rem;
 }
+
 select {
     width: 107%;
     padding-inline-end: 3%;
 }
+
 .head {
-    margin:5% auto;
-    max-width:800px;
+    margin: 5% auto;
+    max-width: 800px;
     padding-right: 2%;
     border-radius: 5px;
-    border:solid 1px black;
+    border: solid 1px black;
     background-color: aliceblue;
 }
+
 input[type="submit"] {
-    width:10rem;
-    margin:  0 auto;
+    width: 10rem;
+    margin: 0 auto;
     padding: 2%;
     cursor: pointer;
     background-color: cadetblue;
-    transition:background-color 0.3s linear;
+    transition: background-color 0.3s linear;
     margin-bottom: 5%;
 }
+
 input[type="submit"]:hover,
 input[type="submit"]:focus {
     background-color: rgba(80, 162, 165, 0.452);
-    outline:solid 2px black;
+    outline: solid 2px black;
 }
-.err{
+
+.err {
     color: red;
     font-size: 1rem;
-    transform: translate(0,-1em);
+    transform: translate(0, -1em);
 }
