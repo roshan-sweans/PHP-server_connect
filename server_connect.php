@@ -175,7 +175,7 @@
         </div>
     </div>
     <?php
-        if($err_name==''&&$err_phone==''&&$err_email==''&&$err_gender=''&&$err_education==''&&$err_dob==''&&$err_working==''&&$err_annum=''){
+        if($err_name==''&&$err_address==''&&$err_phone==''&&$err_email==''&&$err_gender=''&&$err_education==''&&$err_dob==''&&$err_working==''&&$err_annum=''){
             echo "it is here";
             if ($working=="yes"){
                 $work=1;
@@ -193,7 +193,6 @@
         }
         header('Location : output.php');
         }
-    
     ?>
 </body>
 
